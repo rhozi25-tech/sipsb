@@ -16,24 +16,37 @@ function insertJadwal($conn, $nama, $tahfidz, $it, $santri_id)
 
 // Tambahkan variabel untuk memeriksa apakah data jadwal sudah tersimpan atau belum
 $dataJadwalTersimpan = false;
+$soalUjianTersedia = false; // Tambahkan variabel untuk memeriksa apakah soal IT tersedia
+$soalTahfidzTersedia = false; // Tambahkan variabel untuk memeriksa apakah soal Tahfidz tersedia
 
 // Tambahkan logika untuk memeriksa apakah data jadwal sudah ada di tabel jadwal_tes
-$queryCekData = "SELECT COUNT(*) AS jml_data FROM jadwal_tes WHERE santri_id = $santri_id";
+$queryCekData = "SELECT COUNT(*) AS jml_data, it, tahfidz FROM jadwal_tes WHERE santri_id = $santri_id";
 $resultCekData = mysqli_query($conn, $queryCekData);
 
 if ($resultCekData) {
     $rowCekData = mysqli_fetch_assoc($resultCekData);
     if ($rowCekData['jml_data'] > 0) {
         $dataJadwalTersimpan = true;
+        $tanggalUjianIT = $rowCekData['it'];
+        $tanggalUjianTahfidz = $rowCekData['tahfidz'];
+
+        // Memeriksa apakah tanggal ujian IT adalah hari ini
+        $hariIni = date('Y-m-d');
+        if ($tanggalUjianIT === $hariIni) {
+            $soalUjianTersedia = true;
+        }
+
+        // Memeriksa apakah tanggal ujian Tahfidz adalah hari ini
+        if ($tanggalUjianTahfidz === $hariIni) {
+            $soalTahfidzTersedia = true;
+        }
     }
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !$dataJadwalTersimpan) {
     // Mendapatkan data yang dikirimkan melalui formulir
-
     $tahfidz = $_POST["tahfidz"];
     $it = $_POST["it"];
-
 
     // Mengubah angka Tahfidz menjadi tanggal dengan format yang sesuai dengan database ("YYYY-MM-DD")
     $tanggalTahfidz = date('Y-m-d', strtotime(date('Y-m-') . $tahfidz));
@@ -216,16 +229,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !$dataJadwalTersimpan) {
                                                                             <td>:</td>
                                                                             <th>' . $tanggalIT . '</th>
                                                                         </tr>
+                                                                        <tr>
+                                                                            <td>Tempat</td>
+                                                                            <td>:</td>
+                                                                            <th>Secara Online Video Call</th>
+                                                                        </tr>
                                                                     </table>';
                             ?>
 
-                            <p class="text-justify mt-3">Kami akan menghubungi melalui whatsapp untuk jam lebih lanjutnya</p>
+                            <p class="text-justify mt-3">Kami akan menghubungi melalui WhatsApp untuk jam lebih lanjutnya</p>
 
-                            <a href="index.php" class="btn btn-primary d-block">Kembali ke Dashboard</a>
+                            <a href="index.php" class="btn card-selected d-block">Kembali ke Dashboard</a>
 
                         </div>
                     </div>
                 </div>
+                <?php if ($soalUjianTersedia) { ?>
+                    <!-- Card 3: Soal Ujian -->
+                    <div class="col-sm-4">
+                        <div class="card" id="card3">
+                            <div class="card-body">
+                                <h5 class="font-weight-bold text-center">Soal Ujian IT</h5>
+                                <hr>
+                                <!-- Tambahkan konten untuk menampilkan soal ujian IT -->
+                                
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+                <?php if ($soalTahfidzTersedia) { ?>
+                    <!-- Card 4: Soal Tahfidz -->
+                    <div class="col-sm-4">
+                        <div class="card" id="card4">
+                            <div class="card-body">
+                                <h5 class="font-weight-bold text-center">Soal Ujian Tahfidz</h5>
+                                <hr>
+                                <!-- Tambahkan konten untuk menampilkan soal ujian Tahfidz -->
+                                
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
             <?php } ?>
         </div>
     </div>

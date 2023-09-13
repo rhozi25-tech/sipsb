@@ -28,15 +28,15 @@
 <body>
     <div class="connect-container align-content-stretch d-flex flex-wrap">
         <div class="page-sidebar">
-            <div class="logo-box"><a href="#" class="logo-text">PSB SI</a><a href="#" id="sidebar-close"><i class="material-icons">close</i></a> <a href="#" id="sidebar-state"><i class="material-icons">adjust</i><i class="material-icons compact-sidebar-icon">panorama_fish_eye</i></a>
+            <div class="logo-box"><a href="#" class="logo-text" style="color: #f6921f; font-weight: bold;">PSB SI</a><a href="#" id="sidebar-close"><i class="material-icons">close</i></a> <a href="#" id="sidebar-state"><i class="material-icons">adjust</i><i class="material-icons compact-sidebar-icon">panorama_fish_eye</i></a>
             </div>
             <div class="page-sidebar-inner slimscroll">
                 <ul class="accordion-menu">
                     <li class="sidebar-title">
                         Dashboard
                     </li>
-                    <li class="active-page">
-                        <a href="index.php" class="active"><i class="material-icons-outlined">dashboard</i>Dashboard</a>
+                    <li class="card-selected">
+                        <a href="index.php" class="active text-white"><i class="material-icons-outlined">dashboard</i>Dashboard</a>
                     </li>
                     <li class="sidebar-title">
                         Menu Biodata

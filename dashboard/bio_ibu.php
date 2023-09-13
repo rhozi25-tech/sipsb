@@ -3,13 +3,13 @@ include "session.php";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Mengambil data dari formulir
-    $namaIbu = $_POST['nama_ibu'];
-    $profesiIbu = $_POST['profesi_ibu'];
-    $namaInstansiIbu = $_POST['nama_instansi_ibu'];
-    $penghasilanIbu = $_POST['penghasilan_ibu'];
-    $sosialMediaIbu = $_POST['sosial_media_ibu'];
-    $namaSosialMediaIbu = $_POST['nama_sosial_media_ibu'];
-    $alamatIbu = $_POST['alamat_ibu'];
+    $namaIbu = mysqli_real_escape_string($conn, trim($_POST['nama_ibu']));
+    $profesiIbu = mysqli_real_escape_string($conn, trim($_POST['profesi_ibu']));
+    $namaInstansiIbu = mysqli_real_escape_string($conn, trim($_POST['nama_instansi_ibu']));
+    $penghasilanIbu = mysqli_real_escape_string($conn, trim($_POST['penghasilan_ibu']));
+    $sosialMediaIbu = mysqli_real_escape_string($conn, trim($_POST['sosial_media_ibu']));
+    $namaSosialMediaIbu = mysqli_real_escape_string($conn, trim($_POST['nama_sosial_media_ibu']));
+    $alamatIbu = mysqli_real_escape_string($conn, trim($_POST['alamat_ibu']));
 
     // Query SQL untuk mengupdate data berdasarkan ID sesi
     $sql = "UPDATE detail_ibu SET 
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             WHERE santri_id=$santri_id";
 
     if (mysqli_query($conn, $sql)) {
-        header("Location: " . $_SERVER['PHP_SELF']);
+        header("Location: index.php");
         exit();
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
@@ -33,6 +33,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 require_once "partials/header.php";
 ?>
+<!-- SweetAlert2 CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+
+
 <div class="page-container">
     <?php
     require_once "partials/nav.php";
@@ -40,9 +46,13 @@ require_once "partials/header.php";
     <div class="page-content">
         <div class="row">
             <div class="col-xl">
+                <div class="card card-selected" id="salam">
+                    <div style="box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;" class="card-body d-flex flex-column justify-content-center align-items-center" style="height: 200px;">
+                        <h4 class="text-center">Biodata Ibu</h4>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="text-center mb-4">Biodata Ibu</h3>
                         <form method="post">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -111,10 +121,9 @@ require_once "partials/header.php";
                                 <textarea class="form-control" id="alamat_ibu" name="alamat_ibu" rows="3" placeholder="Contoh: Jl. Ahmad Yani No. 456, Kota XYZ" required><?= $row['nama_sosial_media_ibu'] ?></textarea>
                             </div>
                             <div class="d-flex bd-highlight mb-3">
-                                <div class="mr-auto p-2 bd-highlight"><button type="submit" class="btn btn-primary btn-sm">Simpan</button></div>
+                                <div class="mr-auto p-2 bd-highlight"><button type="submit" class="btn card-selected btn-sm">Simpan</button></div>
                                 <div class="p-2 bd-highlight">
                                     <a class="btn btn-secondary btn-sm" href="../dashboard/bio_ayah.php">kembali</a>
-                                    <a class="btn btn-secondary btn-sm" href="../dashboard/">selesai</a>
                                 </div>
                             </div>
                         </form>
@@ -123,6 +132,27 @@ require_once "partials/header.php";
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.querySelector("form");
+
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                Swal.fire({
+                    title: "<span style='font-size: 20px; color:#faae40 '>Terima kasih sudah mengisi!</span>",
+                    icon: "success",
+                    timer: 2000, // Tampilkan pesan selama 1,5 detik
+                    showConfirmButton: false,
+                }).then(() => {
+                    // Setelah SweetAlert ditampilkan, submit formulir
+                    form.submit();
+                });
+            });
+        });
+    </script>
+
     <?php
     require_once "partials/footer.php";
     ?>

@@ -2,16 +2,18 @@
 include "session.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Mengambil data dari form
-    $namaPanggilan = $_POST['nama_panggilan'];
-    $tempatLahir = $_POST['tempat_lahir'];
-    $tanggalLahir = $_POST['tanggal_lahir'];
-    $jenisKelamin = $_POST['jenis_kelamin'];
-    $sekolahAsal = $_POST['sekolah_asal'];
-    $jumlahHafalan = $_POST['jumlah_hafalan'];
-    $anakKe = $_POST['anak_ke'];
-    $jumlahSaudara = $_POST['jumlah_saudara'];
-    $penyakitDiderita = $_POST['penyakit_diderita'];
-    $alamatSosialMedia = $_POST['alamat_sosial_media'];
+    $namaPanggilan = mysqli_real_escape_string($conn, trim($_POST['nama_panggilan']));
+    $tempatLahir = mysqli_real_escape_string($conn, trim($_POST['tempat_lahir']));
+    $tanggalLahir = mysqli_real_escape_string($conn, trim($_POST['tanggal_lahir']));
+    $jenisKelamin = mysqli_real_escape_string($conn, trim($_POST['jenis_kelamin']));
+    $sekolahAsal = mysqli_real_escape_string($conn, trim($_POST['sekolah_asal']));
+    $jumlahHafalan = mysqli_real_escape_string($conn, trim($_POST['jumlah_hafalan']));
+    $anakKe = mysqli_real_escape_string($conn, trim($_POST['anak_ke']));
+    $jumlahSaudara = mysqli_real_escape_string($conn, trim($_POST['jumlah_saudara']));
+    $penyakitDiderita = mysqli_real_escape_string($conn, trim($_POST['penyakit_diderita']));
+    $alamatSosialMedia = mysqli_real_escape_string($conn, trim($_POST['alamat_sosial_media']));
+
+
 
     // Query SQL untuk mengupdate data
     $sql = "UPDATE detail_santri SET 
@@ -28,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             WHERE santri_id=$santri_id";
 
     if (mysqli_query($conn, $sql)) {
-        header("Location: " . $_SERVER['PHP_SELF']);
+        header("Location: bio_ayah.php");
         exit();
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
@@ -47,9 +49,13 @@ require_once "partials/header.php";
     <div class="page-content">
         <div class="row">
             <div class="col-xl">
+                <div class="card card-selected" id="salam">
+                    <div style="box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;" class="card-body d-flex flex-column justify-content-center align-items-center" style="height: 200px;">
+                        <h4 class="text-center">Biodata Santri</h4>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="text-center mb-3">Biodata Santri</h3>
                         <form method="post">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -90,13 +96,13 @@ require_once "partials/header.php";
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="anakKe">Anak ke</label>
-                                    <input name="anak_ke" value="<?= $row['anak_ke'] ?>" type="text" class="form-control" id="anakKe" placeholder="Masukkan Anak ke" required>
+                                    <input name="anak_ke" value="<?= $row['anak_ke'] ?>" type="number" class="form-control" id="anakKe" placeholder="Masukkan Anak ke" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label for="jumlahSaudara">Jumlah Saudara</label>
-                                    <input name="jumlah_saudara" value="<?= $row['jumlah_saudara'] ?>" type="text" class="form-control" id="jumlahSaudara" placeholder="Masukkan Jumlah Saudara" required>
+                                    <input name="jumlah_saudara" value="<?= $row['jumlah_saudara'] ?>" type="number" class="form-control" id="jumlahSaudara" placeholder="Masukkan Jumlah Saudara" required>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="penyakit">Penyakit yang Pernah Diderita</label>
@@ -108,10 +114,7 @@ require_once "partials/header.php";
                                 <input name="alamat_sosial_media" value="<?= $row['alamat_sosial_media'] ?>" type="text" class="form-control" id="alamatSosialMedia" placeholder="Masukkan Alamat Sosial Media" required>
                             </div>
                             <div class="d-flex bd-highlight mb-3">
-                                <div class="mr-auto p-2 bd-highlight"><button type="submit" class="btn btn-primary">Simpan Data</button></div>
-                                <div class="p-2 bd-highlight">
-                                    <a class="btn btn-secondary" href="../dashboard/bio_ayah.php">Lanjut</a>
-                                </div>
+                                <div class="mr-auto p-2 bd-highlight"><button type="submit" class="btn card-selected">Lanjut</button></div>
                             </div>
 
                         </form>

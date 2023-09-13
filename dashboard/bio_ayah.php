@@ -3,13 +3,13 @@ include "session.php";
 // Cek apakah ada permintaan POST dari formulir
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Mengambil data dari formulir
-    $namaAyah = $_POST['nama_ayah'];
-    $profesi = $_POST['profesi'];
-    $namaInstansi = $_POST['nama_instansi'];
-    $penghasilan = $_POST['penghasilan'];
-    $sosialMediaAyah = $_POST['sosial_media_ayah'];
-    $namaSosialMediaAyah = $_POST['nama_sosial_media_ayah'];
-    $alamatAyah = $_POST['alamat_ayah'];
+    $namaAyah = mysqli_real_escape_string($conn, trim($_POST['nama_ayah']));
+    $profesi = mysqli_real_escape_string($conn, trim($_POST['profesi']));
+    $namaInstansi = mysqli_real_escape_string($conn, trim($_POST['nama_instansi']));
+    $penghasilan = mysqli_real_escape_string($conn, trim($_POST['penghasilan']));
+    $sosialMediaAyah = mysqli_real_escape_string($conn, trim($_POST['sosial_media_ayah']));
+    $namaSosialMediaAyah = mysqli_real_escape_string($conn, trim($_POST['nama_sosial_media_ayah']));
+    $alamatAyah = mysqli_real_escape_string($conn, trim($_POST['alamat_ayah']));
 
     // Query SQL untuk mengupdate data berdasarkan ID sesi
     $sql = "UPDATE detail_ayah SET 
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             WHERE santri_id=$santri_id";
 
     if (mysqli_query($conn, $sql)) {
-        header("Location: " . $_SERVER['PHP_SELF']);
+        header("Location: bio_ibu.php");
         exit();
     } else {
         echo "Error: " . $sql . "<br>" . mysqli_error($conn);
@@ -38,9 +38,13 @@ require_once "partials/header.php";
     <div class="page-content">
         <div class="row">
             <div class="col-xl">
+            <div class="card card-selected" id="salam">
+                    <div style="box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;" class="card-body d-flex flex-column justify-content-center align-items-center" style="height: 200px;">
+                        <h4 class="text-center">Biodata Ayah</h4>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-body">
-                        <h3 class="text-center mb-4">Biodata Ayah</h3>
                         <form method="post">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -122,10 +126,9 @@ require_once "partials/header.php";
                                 <textarea class="form-control" id="alamat_ayah" name="alamat_ayah" rows="3" placeholder="Contoh: Jl. Ahmad Yani No. 123, Kota ABC" required><?= $row['alamat_ayah'] ?></textarea>
                             </div>
                             <div class="d-flex bd-highlight mb-3">
-                                <div class="mr-auto p-2 bd-highlight"><button type="submit" class="btn btn-primary btn-sm">Simpan</button></div>
+                                <div class="mr-auto p-2 bd-highlight"><button type="submit" class="btn card-selected btn-sm">Lanjut</button></div>
                                 <div class="p-2 bd-highlight">
                                     <a class="btn btn-secondary btn-sm" href="../dashboard/bio_santri.php">Kembali</a>
-                                    <a class="btn btn-secondary btn-sm" href="../dashboard/bio_ibu.php">Lanjut</a>
                                 </div>
                             </div>
                         </form>

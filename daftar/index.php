@@ -49,7 +49,10 @@ include "payment_channel.php";
                     <div class="auth-form">
                         <div class="row">
                             <div class="col">
-                                <div class="logo-box"><a href="#" class="logo-text">Pendaftaran Santri
+                                <center>
+                                    <img class="img-fluid" src="../assets/images/logo.png" width="200" height="200" alt="">
+                                </center>
+                                <div class="logo-box"><a href="#" style="color: #f6921f; font-weight: bold;">Pendaftaran Santri
                                         Baru</a></div>
                                 <form method="POST" action="proses.php">
                                     <input type="hidden" name="biaya_daftar" value="600000" id="biaya_daftar">
@@ -201,7 +204,7 @@ include "payment_channel.php";
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary btn-block btn-submit">Daftar
+                                    <button type="submit" class="btn card-selected btn-block btn-submit">Daftar
                                         Sekarang</button><br>
                                     <a href="../login/" class="text-info">Sudah punya akun ? Masuk</a>
                                 </form>
